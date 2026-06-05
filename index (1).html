@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Wears Nona – Form Pesanan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --blush: #f5e6e0;
+      --rose: #c9867a;
+      --deep: #3d2424;
+      --cream: #fdf8f5;
+      --muted: #9c7b74;
+      --line: #e8d5cf;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--cream); font-family: 'DM Sans', sans-serif; color: var(--deep); min-height: 100vh; }
+
+    header {
+      background: var(--deep);
+      padding: 48px 24px 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 120%, #c9867a33, transparent);
+    }
+    .brand {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 8vw, 3.5rem);
+      color: var(--blush);
+      letter-spacing: 0.08em;
+      position: relative;
+    }
+    .brand em { color: var(--rose); font-style: italic; }
+    .tagline {
+      margin-top: 8px;
+      font-size: 0.78rem;
+      letter-spacing: 0.25em;
+      color: var(--muted);
+      text-transform: uppercase;
+      position: relative;
+    }
+
+    .wrap { max-width: 560px; margin: 0 auto; padding: 40px 20px 80px; }
+
+    .section-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--rose);
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--line);
+    }
+    .group { margin-bottom: 28px; }
+
+    label {
+      display: block;
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.92rem;
+      color: var(--deep);
+      outline: none;
+      transition: border-color 0.2s;
+      appearance: none;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--rose);
+      box-shadow: 0 0 0 3px #c9867a18;
+    }
+    textarea { resize: vertical; min-height: 80px; }
+
+    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    #harga-display {
+      background: var(--blush);
+      border-color: transparent;
+      font-weight: 500;
+      color: var(--rose);
+    }
+
+    /* badge motif */
+    .motif-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+    }
+    .motif-btn {
+      padding: 8px 14px;
+      border: 1.5px solid var(--line);
+      border-radius: 999px;
+      background: white;
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: all 0.15s;
+      color: var(--deep);
+      font-family: 'DM Sans', sans-serif;
+    }
+    .motif-btn:hover { border-color: var(--rose); }
+    .motif-btn.active {
+      background: var(--rose);
+      border-color: var(--rose);
+      color: white;
+      font-weight: 500;
+    }
+    .motif-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+    .total-box {
+      background: var(--deep);
+      color: var(--blush);
+      border-radius: 12px;
+      padding: 18px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 24px 0;
+    }
+    .total-label { font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; }
+    .total-value { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--rose); }
+
+    .upload-area {
+      border: 2px dashed var(--line);
+      border-radius: 12px;
+      padding: 28px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      position: relative;
+    }
+    .upload-area:hover { border-color: var(--rose); background: #f5e6e022; }
+    .upload-area input[type=file] {
+      position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+    }
+    .upload-icon { font-size: 2rem; margin-bottom: 8px; }
+    .upload-text { font-size: 0.82rem; color: var(--muted); }
+    #file-name { margin-top: 8px; font-size: 0.8rem; color: var(--rose); font-weight: 500; }
+
+    button[type=submit] {
+      width: 100%;
+      background: var(--rose);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 16px;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+    button[type=submit]:hover { background: #b8756a; }
+    button[type=submit]:active { transform: scale(0.98); }
+    button[type=submit]:disabled { background: var(--muted); cursor: not-allowed; }
+
+    #toast {
+      position: fixed;
+      bottom: 32px; left: 50%;
+      transform: translateX(-50%) translateY(60px);
+      background: var(--deep);
+      color: var(--blush);
+      padding: 14px 28px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      opacity: 0;
+      transition: all 0.4s;
+      z-index: 99;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    .divider { height: 1px; background: var(--line); margin: 32px 0; }
+
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23c9867a' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
+    }
+
+    .hint { font-size: 0.75rem; color: var(--muted); margin-top: 6px; }
+    select:disabled { opacity: 0.4; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="brand">wears.<em>nona</em></div>
+  <div class="tagline">soft feminine fashion · form pemesanan</div>
+</header>
+
+<div class="wrap">
+
+  <!-- DATA PEMBELI -->
+  <div class="group">
+    <div class="section-label">✦ Data Pembeli</div>
+    <label>Nama Lengkap</label>
+    <input type="text" id="nama" placeholder="Nama kamu…" />
+  </div>
+
+  <div class="group">
+    <div class="row2">
+      <div>
+        <label>Nomor WhatsApp</label>
+        <input type="tel" id="hp" placeholder="08xxxxxxxxxx" />
+      </div>
+      <div>
+        <label>Platform Order</label>
+        <select id="platform">
+          <option value="">Pilih…</option>
+          <option>Instagram DM</option>
+          <option>WhatsApp</option>
+          <option>Shopee</option>
+          <option>Tokopedia</option>
+          <option>TikTok Shop</option>
+          <option>Langsung / COD</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="group">
+    <label>Alamat Pengiriman</label>
+    <textarea id="alamat" placeholder="Jalan, kelurahan, kecamatan, kota, kode pos…"></textarea>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- DETAIL PESANAN -->
+  <div class="group">
+    <div class="section-label">✦ Detail Pesanan</div>
+    <label>Nama Produk</label>
+    <select id="produk" onchange="onProdukChange()">
+      <option value="">Pilih produk…</option>
+      <option value="Pleated Floral Top">Pleated Floral Top – Sleeveless</option>
+    </select>
+  </div>
+
+  <div class="group">
+    <label>Motif & Ukuran</label>
+    <div class="motif-grid" id="motif-grid">
+      <span class="hint">Pilih produk dulu ya 🌸</span>
+    </div>
+    <input type="hidden" id="motif-selected" value="" />
+    <input type="hidden" id="harga" value="0" />
+  </div>
+
+  <div class="group">
+    <div class="row2">
+      <div>
+        <label>Qty</label>
+        <input type="number" id="qty" value="1" min="1" max="99" oninput="updateTotal()" />
+      </div>
+      <div>
+        <label>Harga Satuan</label>
+        <input type="text" id="harga-display" readonly placeholder="Otomatis terisi" />
+      </div>
+    </div>
+  </div>
+
+  <div class="total-box">
+    <span class="total-label">Total Pesanan</span>
+    <span class="total-value" id="total-display">Rp 0</span>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- PEMBAYARAN -->
+  <div class="group">
+    <div class="section-label">✦ Pembayaran</div>
+    <label>Metode Pembayaran</label>
+    <select id="metode-bayar">
+      <option value="">Pilih…</option>
+      <option>Transfer BCA</option>
+      <option>Transfer BRI</option>
+      <option>Transfer BNI</option>
+      <option>Dana</option>
+      <option>GoPay</option>
+      <option>OVO</option>
+      <option>ShopeePay</option>
+      <option>COD</option>
+    </select>
+  </div>
+
+  <div class="group">
+    <label>Upload Bukti Transfer</label>
+    <div class="upload-area">
+      <input type="file" id="bukti-file" accept="image/*,.pdf" onchange="showFileName(this)" />
+      <div class="upload-icon">📎</div>
+      <div class="upload-text">Klik untuk pilih foto bukti transfer</div>
+      <div id="file-name"></div>
+    </div>
+  </div>
+
+  <div class="group">
+    <label>Catatan Tambahan (opsional)</label>
+    <textarea id="catatan" placeholder="Request khusus, dll…" style="min-height:60px"></textarea>
+  </div>
+
+  <button type="submit" id="btn-submit" onclick="submitOrder()">
+    ✦ Kirim Pesanan
+  </button>
+
+</div>
+
+<div id="toast"></div>
+
+<script>
+  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzGKZcJMkrW7Wcs6G2dHTDl-taig5vjsmbO7VHLJ_zHlXbW0x4e0pc9rnRSvFMjsm8QAA/exec";
+
+  // ── DATA PRODUK (dari 3_MasterProduk) ──
+  // format: { label, harga }
+  const PRODUK_DATA = {
+    "Pleated Floral Top": [
+      { label: "Floral Pink – S/M",  harga: 139900 },
+      { label: "Floral Pink – L/XL", harga: 144900 },
+      { label: "Polkadot Biru – S/M",  harga: 139900 },
+      { label: "Polkadot Biru – L/XL", harga: 144900 },
+    ]
+  };
+
+  function fmt(n) {
+    return 'Rp ' + n.toLocaleString('id-ID');
+  }
+
+  function onProdukChange() {
+    const produk = document.getElementById('produk').value;
+    const grid = document.getElementById('motif-grid');
+    document.getElementById('motif-selected').value = '';
+    document.getElementById('harga').value = 0;
+    document.getElementById('harga-display').value = '';
+    document.getElementById('total-display').textContent = 'Rp 0';
+
+    if (!produk || !PRODUK_DATA[produk]) {
+      grid.innerHTML = '<span class="hint">Pilih produk dulu ya 🌸</span>';
+      return;
+    }
+
+    grid.innerHTML = '';
+    PRODUK_DATA[produk].forEach((item, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'motif-btn';
+      btn.type = 'button';
+      btn.textContent = item.label;
+      btn.onclick = () => selectMotif(item, btn);
+      grid.appendChild(btn);
+    });
+  }
+
+  function selectMotif(item, btn) {
+    document.querySelectorAll('.motif-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('motif-selected').value = item.label;
+    document.getElementById('harga').value = item.harga;
+    document.getElementById('harga-display').value = fmt(item.harga);
+    updateTotal();
+  }
+
+  function updateTotal() {
+    const harga = parseInt(document.getElementById('harga').value || 0);
+    const qty = parseInt(document.getElementById('qty').value || 1);
+    document.getElementById('total-display').textContent = fmt(harga * qty);
+  }
+
+  function showFileName(input) {
+    const name = input.files[0]?.name || '';
+    document.getElementById('file-name').textContent = name ? '✓ ' + name : '';
+  }
+
+  function toast(msg, duration = 3500) {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.classList.add('show');
+    setTimeout(() => el.classList.remove('show'), duration);
+  }
+
+  async function toBase64(file) {
+    return new Promise((res, rej) => {
+      const r = new FileReader();
+      r.onload = () => res(r.result.split(',')[1]);
+      r.onerror = rej;
+      r.readAsDataURL(file);
+    });
+  }
+
+  async function submitOrder() {
+    const nama = document.getElementById('nama').value.trim();
+    const hp = document.getElementById('hp').value.trim();
+    const platform = document.getElementById('platform').value;
+    const alamat = document.getElementById('alamat').value.trim();
+    const produk = document.getElementById('produk').value;
+    const motif = document.getElementById('motif-selected').value;
+    const qty = parseInt(document.getElementById('qty').value);
+    const harga = parseInt(document.getElementById('harga').value);
+    const metodeBayar = document.getElementById('metode-bayar').value;
+    const catatan = document.getElementById('catatan').value.trim();
+    const fileInput = document.getElementById('bukti-file');
+
+    if (!nama || !hp || !produk || !motif || !metodeBayar) {
+      toast('⚠ Lengkapi nama, HP, produk, motif & metode bayar ya!');
+      return;
+    }
+
+    const btn = document.getElementById('btn-submit');
+    btn.disabled = true;
+    btn.textContent = 'Mengirim…';
+
+    let buktiBase64 = '';
+    let buktiNama = '';
+    if (fileInput.files[0]) {
+      buktiBase64 = await toBase64(fileInput.files[0]);
+      buktiNama = fileInput.files[0].name;
+    }
+
+    const payload = {
+      tanggal: new Date().toLocaleString('id-ID'),
+      nama, hp, platform, alamat,
+      produk, motif, qty, harga,
+      total: harga * qty,
+      metodeBayar, catatan,
+      buktiBase64, buktiNama
+    };
+
+    try {
+      await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        body: JSON.stringify(payload)
+      });
+      toast('🌸 Pesanan terkirim! Kami konfirmasi via WA ya~');
+      setTimeout(() => {
+        document.getElementById('nama').value = '';
+        document.getElementById('hp').value = '';
+        document.getElementById('platform').value = '';
+        document.getElementById('alamat').value = '';
+        document.getElementById('produk').value = '';
+        document.getElementById('motif-grid').innerHTML = '<span class="hint">Pilih produk dulu ya 🌸</span>';
+        document.getElementById('motif-selected').value = '';
+        document.getElementById('harga').value = 0;
+        document.getElementById('harga-display').value = '';
+        document.getElementById('qty').value = 1;
+        document.getElementById('total-display').textContent = 'Rp 0';
+        document.getElementById('metode-bayar').value = '';
+        document.getElementById('catatan').value = '';
+        document.getElementById('file-name').textContent = '';
+      }, 500);
+    } catch (err) {
+      toast('❌ Gagal terkirim. Cek koneksi & coba lagi.');
+    }
+
+    btn.disabled = false;
+    btn.textContent = '✦ Kirim Pesanan';
+  }
+</script>
+</body>
+</html>
